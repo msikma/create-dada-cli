@@ -1,0 +1,19 @@
+{
+  "name": "create-dada-cli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CLI tool for quickly scaffolding new CLI tools",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "create-dada-cli": "bin/create-dada-cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dada-cli-tools": "0.0.1"
+  }
+}
