@@ -4,16 +4,17 @@
   "private": true,
   "description": "CLI tool for quickly scaffolding new CLI tools",
   "main": "src/index.js",
+  "homepage": "https://github.com/msikma/create-dada-cli",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "create-dada-cli": "bin/create-dada-cli.js"
+    "create-dada-cli": "src/bin/create-dada-cli.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "dada-cli-tools": "0.0.1"
+    "dada-cli-tools": "0.0.8"
   }
 }
