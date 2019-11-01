@@ -1,20 +1,32 @@
 {
   "name": "create-dada-cli",
   "version": "1.0.0",
-  "private": true,
   "description": "CLI tool for quickly scaffolding new CLI tools",
-  "main": "src/index.js",
+  "private": true,
+  "keywords": [
+    "boilerplate",
+    "cli",
+    "command-line",
+    "scaffolding"
+  ],
   "homepage": "https://github.com/msikma/create-dada-cli",
+  "repository": "git+https://github.com/msikma/callisto.git",
+  "author": "Michiel Sikma <michiel@sikma.org>",
+  "license": "MIT",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "bin": {
-    "create-dada-cli": "src/bin/create-dada-cli.js"
+    "create-dada-cli": "bin/create-dada-cli.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
   "dependencies": {
-    "dada-cli-tools": "0.0.8"
+    "dada-cli-tools": "0.0.14"
   }
 }
