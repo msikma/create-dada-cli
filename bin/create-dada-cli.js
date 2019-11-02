@@ -3,26 +3,19 @@
 // create-dada-cli - Quickly scaffold CLI utilities <https://github.com/msikma/create-dada-cli>
 // © MIT license
 
-const makeArgParser = require('dada-cli-tools/argparse').default
+const { makeArgParser } = require('dada-cli-tools/argparse')
 const { ensurePeriod } = require('dada-cli-tools/util/text')
-const { createProject } = require('../create')
+const { readJSONSync } = require('dada-cli-tools/util/read')
+const { createApp$ } = require('../src/index')
 
-const packageData = require('../../package.json')
+const pkgData = readJSONSync(`${__dirname}/../package.json`)
 const parser = makeArgParser({
+  version: pkgData.version,
   addHelp: true,
-  description: ensurePeriod(packageData.description),
-  version: packageData.version
+  description: ensurePeriod(pkgData.description)
 })
 
-parser.addArgument(['name'], { help: 'Name of new project to generate.' })
+parser.addArgument(['name'], { help: 'Name for the new project.' })
+parser.addArgument(['-t', '--type'], { help: 'Template to use for scaffolding this project:', metavar: 'TYPE', choices: ['cli-monorepo'], _choicesHelp: ['CLI binary and library as separate monorepo packages'], defaultValue: 'cli-monorepo' })
 
-const main = () => {
-  const { name } = parser.parseArgs()
-  const cwd = '.';
-
-  if (name) {
-    createProject(name, { cwd })
-  }
-}
-
-main()
+createApp$({ ...parser.parseArgs() }, { pkgData, cwd: process.cwd() })

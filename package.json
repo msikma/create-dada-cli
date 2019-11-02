@@ -27,6 +27,8 @@
     "jest": "^24.9.0"
   },
   "dependencies": {
-    "dada-cli-tools": "0.0.14"
+    "chalk": "^2.4.2",
+    "copy-template-dir": "^1.4.0",
+    "dada-cli-tools": "0.0.16"
   }
 }
