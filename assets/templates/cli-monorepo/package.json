@@ -1,5 +1,5 @@
 {
-  "name": "{{name}}",
+  "name": "{{name}}-monorepo",
   "version": "1.0.0",
   "description": "{{description}}",
   "private": true,
@@ -25,7 +25,5 @@
     "jest": "^24.9.0"
   },
   "dependencies": {
-    "chalk": "^2.4.2",
-    "dada-cli-tools": "0.0.16"
   }
 }

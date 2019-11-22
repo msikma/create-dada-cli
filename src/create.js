@@ -5,7 +5,8 @@ const chalk = require('chalk')
 const { log, die, logErrorFatal } = require('dada-cli-tools/log')
 const { canAccess, ensureDir } = require('dada-cli-tools/util/fs')
 
-const { checkTemplate, copyTemplate, copyCommon, templateDir } = require('./templates')
+const { printTable } = require('./util')
+const { addDefaultVars, checkTemplate, copyTemplate, copyCommon, templateDir, copyLicense } = require('./templates')
 
 // Default replacement values to use when copying over templates.
 const tplDefaults = {
@@ -18,21 +19,30 @@ const tplDefaults = {
 
 /**
  * Runs the project creation script. If something goes wrong, the script will terminate.
- * 
+ *
  * Progress is logged to the console. This is meant to be run from the CLI.
  */
 const createApp$ = async (cliArgs, envInfo) => {
   const { name, type } = cliArgs
   const { cwd } = envInfo // no trailing slash
   const target = `${cwd}/${name}`
-  log(`create-dada-cli@${envInfo.pkgData.version}: Creating new project:`, chalk.yellow(name), `(${chalk.green(type)})`, 'in', `${chalk.cyan(cwd)}${chalk.yellow(`/${name}`)}`)
+
+  log(
+    `create-dada-cli@${envInfo.pkgData.version}: Creating new project:`,
+    chalk.yellow(name),
+    `(${chalk.green(type)})`,
+    'in',
+    `${chalk.cyan(cwd)}${chalk.yellow(`/${name}`)}`
+  )
 
   // Verify that the selected template is valid.
   if (!await checkTemplate(type))
     return die('Cannot find template:', type)
+
   // Verify that we can write here.
   if (!await canAccess(cwd))
     return die('Access denied:', cwd)
+
   // Verify that the target directory doesn't exist yet.
   if (await canAccess(target))
     return die('Target directory already exists:', target)
@@ -54,6 +64,7 @@ const createApp$ = async (cliArgs, envInfo) => {
 /** Displays successful scaffolding result. */
 const createEpilogue = (name, type, target, status) => {
   log('Successfully created new project.')
+  printTable(status.template.vars)
 }
 
 /**
@@ -61,14 +72,17 @@ const createEpilogue = (name, type, target, status) => {
  */
 const createApp = async (name, type, target) => {
   const tplPath = templateDir(type)
+  const appConfig = addDefaultVars({ ...tplDefaults, name })
   const hasDir = await ensureDir(target)
-  const result = await copyTemplate(tplPath, target, { ...tplDefaults, name })
+  const result = await copyTemplate(tplPath, target, appConfig)
   await copyCommon(target)
+  await copyLicense(target, appConfig.license)
   return {
     ok: true,
     template: {
       status: result,
       path: tplPath,
+      vars: appConfig,
       name: type
     },
     hasDir

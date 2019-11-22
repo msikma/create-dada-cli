@@ -3,10 +3,11 @@
 
 const copyTemplateDir = require('copy-template-dir')
 const { canAccess } = require('dada-cli-tools/util/fs')
-const { copyFile } = require('fs').promises
+const { copyFile, rename } = require('fs').promises
 
 const assetsDir = `${__dirname}/../assets`
 const tplDir = `${assetsDir}/templates`
+const licenseDir = `${assetsDir}/licenses`
 const commonFiles = [['gitignore', '.gitignore']]
 
 /**
@@ -22,11 +23,28 @@ const templateDir = type => (
   `${tplDir}/${type}`
 )
 
-/** Copies over a create-dada-cli template to the target directory and replaces placeholders. */
-const copyTemplate = async (source, target, tplVars) => {
+/** Returns license file path for a given license type. */
+const licensePath = type => (
+  `${licenseDir}/`
+)
+
+/** Ensures that the list of template vars contains everything needed. */
+const addDefaultVars = tplVars => {
   const homepage = tplVars.homepage ? tplVars.homepage : `https://github.com/${tplVars.username}/${tplVars.name}`
   const repository = tplVars.repository ? tplVars.repository : `git+${homepage}`
-  return await copyDir(source, target, { ...tplVars, homepage, repository })
+  return { ...tplVars, homepage, repository }
+}
+
+/** Copies over a create-dada-cli template to the target directory and replaces placeholders. */
+const copyTemplate = async (source, target, tplVars) => {
+  return await copyDir(source, target, tplVars)
+}
+
+/** Copies over the requested license file. */
+const copyLicense = async (target, license) => {
+  const file = `${license.toLowerCase()}.md`
+  await copyFile(`${licenseDir}/${file}`, `${target}/${file}`)
+  await rename(`${target}/${file}`, `${target}/license.md`)
 }
 
 /** Copies over common files (such as .gitignore) to the target directory. */
@@ -43,8 +61,10 @@ const copyDir = async (source, target, vars = {}) => new Promise((resolve, rejec
 ))
 
 module.exports = {
+  addDefaultVars,
   checkTemplate,
   copyCommon,
   copyTemplate,
+  copyLicense,
   templateDir
 }

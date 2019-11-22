@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-// {{name}} - {{description}} <{{homepage}}>
+// {{name}} <{{homepage}}>
 // © {{license}} license
