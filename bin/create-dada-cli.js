@@ -16,6 +16,15 @@ const parser = makeArgParser({
 })
 
 parser.addArgument(['name'], { help: 'Name for the new project.' })
-parser.addArgument(['-t', '--type'], { help: 'Template to use for scaffolding this project:', metavar: 'TYPE', choices: ['cli-monorepo'], _choicesHelp: ['CLI binary and library as separate monorepo packages'], defaultValue: 'cli-monorepo' })
+parser.addArgument(
+  ['-t', '--type'],
+  {
+    help: 'Template to use for scaffolding this project:',
+    metavar: 'TYPE',
+    choices: ['cli-monorepo', 'cli-simple'],
+    _choicesHelp: ['CLI binary and library as separate monorepo packages ⒟', 'CLI tool as single package'],
+    defaultValue: 'cli-monorepo'
+  }
+)
 
 createApp$({ ...parser.parseArgs() }, { pkgData, cwd: process.cwd() })
