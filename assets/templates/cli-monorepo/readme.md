@@ -17,7 +17,3 @@ TODO: explain.
 ## License
 
 © {{year}}, {{license}} license.
-
-## Copyright
-
-© 2019, MIT license.

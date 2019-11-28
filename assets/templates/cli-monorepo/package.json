@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "bin": {
-    "{{name}}.js": "packages/{{name}}.js"
+    "{{name}}.js": "packages/cli/index.js"
   },
   "engines": {
     "node": ">=10.0.0"
