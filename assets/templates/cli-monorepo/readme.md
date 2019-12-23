@@ -16,4 +16,4 @@ TODO: explain.
 
 ## License
 
-© {{year}}, {{license}} license.
+© {{license}} license.
