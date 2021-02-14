@@ -30,7 +30,7 @@ parser.addArgument('--file-path', { help: 'Path to an example file.', metavar: '
 parser.addArgument('--check-file', { action: 'storeTrue', help: 'Example of a subtask.', dest: 'checkFile' })
 parser.addArgument('--check-cache', { action: 'storeTrue', help: 'Another example of a subtask.', dest: 'checkCache' })
 parser.addArgument('--output', { help: 'Result output format.', choices: Object.keys(outputFormats), _choicesHelp: Object.values(outputFormats), metavar: 'TYPE', defaultValue: dataDefaultType })
-parser.addArgument('--log', { help: `Sets console logging level ("${logDefaultLevel}" by default). Choices: {${logLevels.join(',')}}.`, dest: 'logLevel', choices: logLevels, metavar: 'LEVEL', defaultValue: 'info' })
+parser.addArgument('--log', { help: `Sets console logging level ("${logDefaultLevel}" by default). Choices: {${logLevels.join(',')}}.`, dest: 'logLevel', choices: logLevels, metavar: 'LEVEL', defaultValue: logDefaultLevel })
 
 const parsed = { ...parser.parseArgs() }
 
