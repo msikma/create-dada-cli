@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// {{name}}-cli <{{homepage}}>
+// {{name}} <{{homepage}}>
 // © {{license}} license
 
 const { resolve } = require('path')
@@ -27,10 +27,5 @@ parser.addArgument('--arg-two', { help: 'Example boolean argument.', action: 'st
 // Parse input. If usage is incorrect, the program will exit and display an error here.
 const parsed = { ...parser.parseArgs() }
 
-/** Main program. */
-const main = (args, { pkgData, baseDir }) => {
-  // main program
-}
-
 // Run the main program.
-main(parsed, { pkgData, baseDir: pkgPath })
+require('./main')(parsed, { pkgData, baseDir: pkgPath })
