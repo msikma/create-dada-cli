@@ -50,9 +50,7 @@ const createApp$ = async (cliArgs, envInfo) => {
   // Seems we're good to go.
   try {
     const status = await createApp(name, type, target)
-    if (status.ok) {
-      createEpilogue(name, type, target, status)
-    }
+    createEpilogue(name, type, target, status)
   }
   catch (err) {
     logErrorFatal('An error occurred while creating the project:')
@@ -63,7 +61,16 @@ const createApp$ = async (cliArgs, envInfo) => {
 
 /** Displays successful scaffolding result. */
 const createEpilogue = (name, type, target, status) => {
-  log('Successfully created new project.')
+  log('')
+  if (status.ok) {
+    log('Successfully created new project.')
+  }
+  else {
+    log('Project was created, but with errors.')
+    if (status.unused.length > 0) {
+      log(`Unused template variables were encountered: ${status.unused.map(n => `{{${n}}}`).join(', ')}. You must find and replace them manually.`)
+    }
+  }
   printTable(status.template.vars)
 }
 
@@ -74,11 +81,12 @@ const createApp = async (name, type, target) => {
   const tplPath = templateDir(type)
   const appConfig = addDefaultVars({ ...tplDefaults, name })
   const hasDir = await ensureDir(target)
-  const result = await copyTemplate(tplPath, target, appConfig)
+  const [result, unused] = await copyTemplate(tplPath, target, appConfig)
   await copyCommon(target)
   await copyLicense(target, appConfig.license)
   return {
-    ok: true,
+    ok: unused.length === 0,
+    unused,
     template: {
       status: result,
       path: tplPath,
